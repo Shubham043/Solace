@@ -24,7 +24,7 @@ This project was built in collaboration with **Antigravity** (Google DeepMind's 
 
 ## 🚀 Performance & Lighthouse Optimization
 
-[Lighthouse Mobile Score](./public/lighthouse_screenshot.png)
+![Lighthouse Mobile Score](./public/lighthouse_screenshot.png)
 A flawless **95–100 Mobile Performance Score** achieved through progressive CSS animations, asset deferral, and layout aspect ratios.*
 
 ### Optimization Architecture
