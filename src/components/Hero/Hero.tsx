@@ -19,7 +19,7 @@ export default function Hero() {
             Sleep reimagined
           </span>
 
-          <h1 className="hero-title animate-fade-in-up delay-2">
+          <h1 className="hero-title animate-slide-up delay-2">
             Sleep deeper.
             <br />
             Wake clearer.
