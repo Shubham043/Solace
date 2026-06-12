@@ -1,5 +1,8 @@
 # Solace — Sleep deeper. Wake clearer.
 
+🔗 **Live site**: https://solace-three-zeta.vercel.app/
+📦 **Repo**: https://github.com/Shubham043/Solace
+
 A highly interactive, high-performance landing page for **Solace**, a premium ambient sleep application featuring a dynamic **Plan Builder** with live pricing calculation.
 
 ---
@@ -15,23 +18,47 @@ A highly interactive, high-performance landing page for **Solace**, a premium am
 
 ## 🤖 AI Tooling & Collaboration
 
-This project was built in collaboration with **Antigravity** (Google DeepMind's advanced coding assistant). The specific collaborative workflows included:
-1. **Interactive Refactoring**: Offloaded layout calculations to a custom React hook [`usePlanBuilder.ts`](file:///c:/Users/rawan/OneDrive/Desktop/Solace/src/hooks/usePlanBuilder.ts) to separate pricing math from view rendering.
-2. **Performance Troubleshooting**: Debugged LCP delay by tracing hydration timing and substituting heavy Framer Motion components in the Hero section with raw CSS keyframes.
-3. **DOM Architecture Correction**: Resolved the layout-shifting scroll jumping bug by isolating Suspense boundaries within individual wrappers.
+This project was built with help from Antigravity, an AI coding assistant, for refactoring, debugging, and implementing features based on my specifications. Specific decisions and bug fixes I directed are detailed below.
+
+---
+
+## 🔍 Engineering Decisions — Where I Directed the AI
+
+### Bugs caught and fixed
+* **Anchor scroll jumping**: Lazy-loaded sections were collapsing in height before they mounted, causing the page to jump when scrolling to `#plan-builder`. Fixed by moving `<Suspense>` inside each `LazySection` wrapper, so the section's `id` element stays in the DOM at all times and never causes a height collapse.
+* **CPU rendering lag on stat count-up**: The initial count-up animation used React state updates on every tick, causing noticeable TBT (Total Blocking Time) on mobile. Replaced with `requestAnimationFrame` mutating `.textContent` directly — bypasses React's render cycle entirely for a purely visual effect.
+* **LCP regression on Vercel (3.11s)**: Initial deploy had LCP well over target due to JS hydration delay on the hero animation. Moved the hero entrance to CSS keyframes and set the `<h1>` to start at `opacity: 1` so it's painted on the very first frame, independent of React hydration. Brought LCP down to 2.1s.
+
+### Design decisions
+* **Centered hero layout**: Chose a centered layout over a split layout to create visual symmetry and draw focus to the breathing orb — better fit for a "calm sleep" product than an asymmetric layout.
+* **Skipped Lottie**: Considered Lottie for the ambient loop, but it adds ~50kB of JS and risked CPU rendering lag on lower-end mobile devices. Used a GPU-accelerated CSS keyframe loop on the provided SVG instead — visually similar, near-zero runtime cost.
+* **Integer paise math**: All pricing calculated in integer paise rather than decimal rupees, eliminating floating-point rounding drift across plan/add-on combinations.
+* **Debounced promo validation**: 500ms debounce on the promo input auto-validates without interrupting typing, while an explicit "Apply" button remains for immediate submission.
+
+### Stack & Tooling Decisions
+* **Animation — Framer Motion**: Chosen over GSAP and pure CSS for scroll-triggered reveals (`whileInView`), tree-shaking support, and built-in `prefers-reduced-motion` handling. Hand-rolled CSS was still used for the hero entrance and orb loop, where bypassing JS hydration mattered more than orchestration convenience — a hybrid approach rather than one tool for everything.
+* **Styling — CSS (vanilla CSS)**: Chosen for zero runtime overhead, full control over the design token system (the Night/Periwinkle/Peach palette), and scoped styles without a build-time utility framework.
 
 ---
 
 ## 🚀 Performance & Lighthouse Optimization
 
 ![Lighthouse Mobile Score](./public/lighthouse_screenshot.png)
-A flawless **95–100 Mobile Performance Score** achieved through progressive CSS animations, asset deferral, and layout aspect ratios.*
+
+**Mobile Performance Score: 91–95** (production build)
+
+* **FCP**: 1.7s
+* **LCP**: 2.1s (target: under 2.5s ✅)
+* **CLS**: 0.002 (target: under 0.1 ✅)
 
 ### Optimization Architecture
-1. **CSS-First Above-the-Fold Animation**: The Hero text elements slide and stagger using native CSS keyframes. This executes immediately on paint, long before React javascript is hydrated, keeping FCP under **1.2s**.
+1. **CSS-First Above-the-Fold Animation**: The Hero text elements slide and stagger using native CSS keyframes. This executes immediately on paint, long before React JavaScript is hydrated, contributing to an FCP of 1.7s.
 2. **Orb Image Deferral**: The hero breathing orb is deferred from mounting by 100ms after load. This prevents it from competing with critical fonts/scripts during first paint.
-3. **Zero CLS (Layout Shift)**: To prevent page shifts when the deferred orb image loads, its container is pre-sized using `aspect-ratio: 1` and `width: min(340px, 70vw)`.
+3. **Near-Zero Layout Shift (CLS: 0.002)**: To prevent page shifts when the deferred orb image loads, its container is pre-sized using `aspect-ratio: 1` and `width: min(340px, 70vw)`.
 4. **Lazy Loaded Below-the-Fold Sections**: Sections below the fold are code-split and loaded 200px before they scroll into view.
+5. **Memoized price calculation**: The price breakdown in `usePlanBuilder.ts` is wrapped in `useMemo`, recalculating only when the plan, add-ons, or promo actually change.
+6. **Debounced promo input**: The promo code field auto-validates 500ms after the user stops typing, instead of on every keystroke.
+7. **Reduced motion support**: Animations respect `prefers-reduced-motion` and flatten to static states for users who've enabled that setting.
 
 ---
 
@@ -56,9 +83,10 @@ A flawless **95–100 Mobile Performance Score** achieved through progressive CS
 ## ⚖️ Tradeoffs & Future Work
 
 * **LCP Opacity Tweak**: To get the LCP under 2.5s, the main header starts at `opacity: 1` and slides up, rather than fading in from `opacity: 0`. This is a tradeoff: we lose a fade transition for the title, but FCP/LCP paint times are cut in half.
+* **Mobile score of 91-95 vs. a "perfect" 100**: A couple of points were left on the table in exchange for keeping the hero animations and orb effect intact — these are central to the product's "calm sleep" feel, and stripping them further for a marginal score bump didn't seem worth the tradeoff.
 * **With More Time**:
   * Implement automated image optimization pipelines to convert visual assets to WebP.
-  * Write unit tests for the pricing hook (`usePlanBuilder`) checking edge cases of plan changes and combined addon promo codes.
+  * Write unit tests for the pricing hook (`usePlanBuilder`) checking edge cases of plan changes and combined add-on/promo codes.
   * Integrate custom design-system color tokens into a Tailwind-like CSS variables utility suite.
 
 ---
