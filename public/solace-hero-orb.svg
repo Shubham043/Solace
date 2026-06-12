@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img" aria-label="Ambient breathing orb">
+  <title>Solace ambient orb</title>
+  <defs>
+    <radialGradient id="core" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#C9B6FF"/>
+      <stop offset="35%" stop-color="#8B7FE8"/>
+      <stop offset="70%" stop-color="#4A3F9E"/>
+      <stop offset="100%" stop-color="#1A1740"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8B7FE8" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#8B7FE8" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#8B7FE8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="sheen" cx="40%" cy="32%" r="45%">
+      <stop offset="0%" stop-color="#FFE8D6" stop-opacity="0.65"/>
+      <stop offset="40%" stop-color="#FFE8D6" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#FFE8D6" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
+
+  <style>
+    @keyframes breathe { 0%,100% { transform: scale(0.96); } 50% { transform: scale(1.04); } }
+    @keyframes pulseGlow { 0%,100% { opacity: 0.55; transform: scale(1); } 50% { opacity: 0.9; transform: scale(1.12); } }
+    @keyframes orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes orbitRev { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+    @keyframes twinkle { 0%,100% { opacity: 0.25; } 50% { opacity: 1; } }
+
+    #orb        { transform-origin: 400px 400px; animation: breathe 7s ease-in-out infinite; }
+    #glowLayer  { transform-origin: 400px 400px; animation: pulseGlow 7s ease-in-out infinite; }
+    #ring1      { transform-origin: 400px 400px; animation: orbit 26s linear infinite; }
+    #ring2      { transform-origin: 400px 400px; animation: orbitRev 38s linear infinite; }
+    .star       { animation: twinkle 4s ease-in-out infinite; }
+    .s2 { animation-delay: -1.3s; } .s3 { animation-delay: -2.6s; } .s4 { animation-delay: -0.7s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      #orb, #glowLayer, #ring1, #ring2, .star { animation: none; }
+    }
+  </style>
+
+  <rect width="800" height="800" fill="#0B0B1A"/>
+
+  <!-- ambient stars -->
+  <g fill="#C9B6FF">
+    <circle class="star"    cx="150" cy="180" r="2.2"/>
+    <circle class="star s2" cx="640" cy="140" r="1.8"/>
+    <circle class="star s3" cx="700" cy="520" r="2.4"/>
+    <circle class="star s4" cx="120" cy="560" r="1.6"/>
+    <circle class="star s2" cx="540" cy="660" r="2.0"/>
+    <circle class="star s3" cx="260" cy="120" r="1.5"/>
+  </g>
+
+  <!-- glow halo -->
+  <circle id="glowLayer" cx="400" cy="400" r="300" fill="url(#glow)" filter="url(#soft)"/>
+
+  <!-- orbiting rings -->
+  <g id="ring1" fill="none" stroke="#8B7FE8" stroke-opacity="0.22" stroke-width="1.2">
+    <ellipse cx="400" cy="400" rx="290" ry="118"/>
+    <circle cx="690" cy="400" r="5" fill="#C9B6FF" stroke="none"/>
+  </g>
+  <g id="ring2" fill="none" stroke="#FF9E7D" stroke-opacity="0.18" stroke-width="1.2">
+    <ellipse cx="400" cy="400" rx="118" ry="270"/>
+    <circle cx="400" cy="130" r="4" fill="#FF9E7D" stroke="none"/>
+  </g>
+
+  <!-- the orb -->
+  <g id="orb">
+    <circle cx="400" cy="400" r="190" fill="url(#core)"/>
+    <circle cx="400" cy="400" r="190" fill="url(#sheen)"/>
+  </g>
+</svg>

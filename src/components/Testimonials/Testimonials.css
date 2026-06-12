@@ -1,0 +1,121 @@
+/* ─── Testimonials ─────────────────────────────────────────────────────── */
+
+.testimonials {
+  padding: var(--section-gap) 0;
+  overflow: hidden;
+}
+
+.testimonials-track-wrapper {
+  position: relative;
+  margin-top: 56px;
+}
+
+/* Fade edges */
+.testimonials-track-wrapper::before,
+.testimonials-track-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.testimonials-track-wrapper::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--night) 0%, transparent 100%);
+}
+
+.testimonials-track-wrapper::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--night) 0%, transparent 100%);
+}
+
+.testimonials-track {
+  display: flex;
+  gap: 20px;
+  animation: marquee 30s linear infinite;
+  width: max-content;
+}
+
+.testimonials-track:hover,
+.testimonials-track:focus-within {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.testimonial-card {
+  flex-shrink: 0;
+  width: 360px;
+  padding: 28px;
+  border-radius: var(--radius);
+  background: linear-gradient(
+    180deg,
+    rgba(20, 19, 43, 0.7) 0%,
+    rgba(20, 19, 43, 0.35) 100%
+  );
+  border: 1px solid var(--border);
+  transition: border-color var(--duration) var(--ease-out);
+}
+
+.testimonial-card:hover {
+  border-color: var(--border-strong);
+}
+
+.testimonial-stars {
+  color: var(--peach);
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+}
+
+.testimonial-quote {
+  font-size: 1rem;
+  color: var(--text);
+  line-height: 1.65;
+  margin-bottom: 18px;
+  font-style: italic;
+}
+
+.testimonial-author {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.testimonial-author strong {
+  color: var(--text-bright);
+  font-weight: 600;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .testimonial-card {
+    width: 300px;
+    padding: 22px;
+  }
+
+  .testimonials-track-wrapper::before,
+  .testimonials-track-wrapper::after {
+    width: 50px;
+  }
+}
+
+/* ── Reduced motion: no marquee ── */
+@media (prefers-reduced-motion: reduce) {
+  .testimonials-track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+  }
+}

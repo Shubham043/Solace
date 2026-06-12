@@ -1,0 +1,482 @@
+/* ─── Plan Builder ─────────────────────────────────────────────────────── */
+
+.plan-builder {
+  padding: var(--section-gap) 0;
+}
+
+.plan-builder-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 28px;
+  align-items: start;
+  margin-top: 56px;
+}
+
+/* ── Plan Selector ── */
+.plan-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.plan-card {
+  padding: 24px 20px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: all var(--duration) var(--ease-out);
+  position: relative;
+  text-align: center;
+}
+
+.plan-card:hover {
+  border-color: var(--border-strong);
+}
+
+.plan-card.selected {
+  border-color: var(--peri);
+  background: linear-gradient(
+    180deg,
+    rgba(139, 127, 232, 0.08) 0%,
+    var(--surface) 100%
+  );
+  box-shadow: 0 0 0 1px var(--peri), 0 8px 32px rgba(139, 127, 232, 0.15);
+}
+
+.plan-card-badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.plan-card-name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 8px;
+  margin-top: 4px;
+}
+
+.plan-card-price {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-bright);
+  font-variant-numeric: tabular-nums;
+}
+
+.plan-card-cycle {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* ── Add-ons ── */
+.addons-section {
+  margin-bottom: 28px;
+}
+
+.addons-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+  font-family: var(--font-display);
+}
+
+.addon-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  margin-bottom: 10px;
+  transition: border-color var(--duration) var(--ease-out);
+}
+
+.addon-item.active {
+  border-color: var(--border-strong);
+  background: linear-gradient(
+    180deg,
+    rgba(139, 127, 232, 0.05) 0%,
+    var(--surface) 100%
+  );
+}
+
+.addon-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+
+.addon-info {
+  flex: 1;
+}
+
+.addon-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-bright);
+}
+
+.addon-price {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ── Toggle Switch ── */
+.toggle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--surface-3);
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--duration) var(--ease-out);
+}
+
+.toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: all var(--duration) var(--ease-out);
+}
+
+.toggle input:checked + .toggle-track {
+  background: var(--peri);
+  border-color: var(--peri);
+}
+
+.toggle input:checked + .toggle-track::after {
+  transform: translateX(20px);
+  background: white;
+}
+
+.toggle input:focus-visible + .toggle-track {
+  outline: 2px solid var(--peri-light);
+  outline-offset: 2px;
+}
+
+/* ── Member Stepper ── */
+.member-stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px 16px;
+  background: rgba(139, 127, 232, 0.06);
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border);
+}
+
+.member-stepper-label {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-right: auto;
+}
+
+.stepper-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--duration) var(--ease-out);
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.stepper-btn:hover:not(:disabled) {
+  background: var(--peri);
+  border-color: var(--peri);
+  color: white;
+}
+
+.stepper-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.stepper-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-bright);
+  min-width: 24px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Promo Code ── */
+.promo-section {
+  margin-bottom: 0;
+}
+
+.promo-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.promo-input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  transition: border-color var(--duration) var(--ease-out);
+}
+
+.promo-input::placeholder {
+  color: var(--faint);
+}
+
+.promo-input:focus {
+  outline: none;
+  border-color: var(--peri);
+}
+
+.promo-apply-btn {
+  padding: 12px 20px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--peri);
+  background: rgba(139, 127, 232, 0.1);
+  color: var(--peri-light);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--duration) var(--ease-out);
+  white-space: nowrap;
+}
+
+.promo-apply-btn:hover {
+  background: var(--peri);
+  color: white;
+}
+
+.promo-message {
+  font-size: 0.82rem;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.promo-message.error {
+  color: var(--danger);
+}
+
+.promo-message.success {
+  color: var(--success);
+}
+
+.promo-remove {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-left: 8px;
+  font-family: var(--font-body);
+}
+
+.promo-remove:hover {
+  color: var(--text);
+}
+
+/* ── Price Breakdown (Sticky Sidebar) ── */
+.breakdown-card {
+  position: sticky;
+  top: 24px;
+  padding: 28px;
+  border-radius: var(--radius);
+  background: linear-gradient(
+    180deg,
+    rgba(20, 19, 43, 0.9) 0%,
+    rgba(20, 19, 43, 0.6) 100%
+  );
+  border: 1px solid var(--border-strong);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.breakdown-title {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 20px;
+}
+
+.breakdown-items {
+  list-style: none;
+  margin-bottom: 20px;
+}
+
+.breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 0.9rem;
+}
+
+.breakdown-item-label {
+  color: var(--muted);
+}
+
+.breakdown-item-value {
+  font-weight: 600;
+  color: var(--text-bright);
+  font-variant-numeric: tabular-nums;
+}
+
+.breakdown-item.discount .breakdown-item-label,
+.breakdown-item.discount .breakdown-item-value {
+  color: var(--success);
+}
+
+.breakdown-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
+.breakdown-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-strong);
+}
+
+.breakdown-total-label {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-bright);
+}
+
+.breakdown-total-value {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-bright);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.breakdown-billing-label {
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-align: right;
+  margin-top: 6px;
+}
+
+.breakdown-savings {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: var(--radius-xs);
+  background: var(--success-dim);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--success);
+}
+
+.breakdown-cta {
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .plan-builder-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .breakdown-card {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .plan-cards {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .plan-card {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    padding: 18px 20px;
+    gap: 16px;
+  }
+
+  .plan-card-badge {
+    position: static;
+    transform: none;
+  }
+
+  .plan-card-name {
+    margin: 0;
+    flex: 1;
+  }
+
+  .plan-card-price {
+    font-size: 1.3rem;
+  }
+
+  .plan-card-cycle {
+    margin: 0;
+  }
+}
