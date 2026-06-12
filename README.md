@@ -24,7 +24,7 @@ This project was built with help from Antigravity, an AI coding assistant, for r
 
 ## 🔍 Engineering Decisions — Where I Directed the AI
 
-### Bugs caught and fixed
+### Technical Challenges Solved
 * **Anchor scroll jumping**: Lazy-loaded sections were collapsing in height before they mounted, causing the page to jump when scrolling to `#plan-builder`. Fixed by moving `<Suspense>` inside each `LazySection` wrapper, so the section's `id` element stays in the DOM at all times and never causes a height collapse.
 * **CPU rendering lag on stat count-up**: The initial count-up animation used React state updates on every tick, causing noticeable TBT (Total Blocking Time) on mobile. Replaced with `requestAnimationFrame` mutating `.textContent` directly — bypasses React's render cycle entirely for a purely visual effect.
 * **LCP regression on Vercel (3.11s)**: Initial deploy had LCP well over target due to JS hydration delay on the hero animation. Moved the hero entrance to CSS keyframes and set the `<h1>` to start at `opacity: 1` so it's painted on the very first frame, independent of React hydration. Brought LCP down to 2.1s.
